@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  master:
+    build:
+      context: .
+      dockerfile: ./compose/local/master/Dockerfile
+    image: pde-master:1.0.0
+    container_name: pde-master
+    hostname: pde-master
+    ports:
+      - 0.0.0.0:8888:8888
+      - 0.0.0.0:6006:6006
+    volumes:
+      - pde-master-conda-data:/opt/conda
+      - ./config/local/master:/master/config
+      - ./data:/master/data
+      - ./docs:/master/docs
+      - ./model:/master/model
+      - ./notebook:/master/notebook
+      - ./src:/master/src
+      - ./test:/master/test
+      - ./utils/local:/master/utils
+    env_file:
+      - ./.env/local/master.env
+    networks:
+      - pde-network
+    working_dir: /master
+    command: bash -c " 
+      echo 'starting pde-master' &&
+      source activate py3.6.10-ai-base &&
+      jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password='' "
+    restart: unless-stopped
+
+volumes:
+  pde-master-conda-data:
+    driver: local
+    name: pde-master-conda-data
+
+networks:
+  pde-network:
+    driver: bridge
+    name: pde-network

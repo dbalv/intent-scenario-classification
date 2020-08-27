@@ -1,0 +1,15 @@
+{
+	"name": "Predictive Development Environment",
+	"dockerComposeFile": [
+		"./docker-compose.yml"
+	],
+	"service": "master",
+	"workspaceFolder": "/master",
+	"extensions": [
+		"formulahendry.code-runner",
+		"esbenp.prettier-vscode"
+	],
+	"shutdownAction": "stopCompose",
+	"settings": {
+	}
+}
